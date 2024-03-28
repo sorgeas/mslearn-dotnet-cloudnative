@@ -12,7 +12,7 @@ spec:
     spec:
       containers:
       - name: productsbackend
-        image: [YOUR DOCKER USER NAME]/productservice:latest
+        image: sorgeas/productservice:latest
         ports:
         - containerPort: 80
         env:
