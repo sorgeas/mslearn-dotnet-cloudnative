@@ -20,7 +20,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.*-*" />
-    <PackageReference Include="Microsoft.Extensions.Telemetry" Version="8.0.*-*" />
+    <PackageReference Include="Microsoft.Extensions.Telemetry" Version="8.3.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.*-*" />
     <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.7.*-*" />
   </ItemGroup>
