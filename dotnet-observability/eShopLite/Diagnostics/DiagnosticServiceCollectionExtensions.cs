@@ -41,9 +41,14 @@ public static class DiagnosticServiceCollectionExtensions
             .WithTracing(tracing =>
             {
                 tracing.SetResourceBuilder(resource)
-                        .AddAspNetCoreInstrumentation()
-                        .AddHttpClientInstrumentation()
-                        .AddSqlClientInstrumentation();
+                            .AddAspNetCoreInstrumentation()
+                            .AddHttpClientInstrumentation()
+                            .AddSqlClientInstrumentation()
+                            .AddZipkinExporter(zipkin =>
+                            {
+                                var zipkinUrl = configuration["ZIPKIN_URL"] ?? "http://zipkin:9411";
+                                zipkin.Endpoint = new Uri($"{zipkinUrl}/api/v2/spans");
+                            });
             });
 
         return services;
