@@ -1,6 +1,8 @@
 ﻿using DataEntities;
 using Microsoft.EntityFrameworkCore;
 using Products.Data;
+using System.Diagnostics.Metrics;
+using Products.Instrumentation;
 
 namespace Products.Endpoints;
 
@@ -10,8 +12,9 @@ public static class ProductEndpoints
     {
         var group = routes.MapGroup("/api/Product");
 
-        group.MapGet("/", async (ProductDataContext db) =>
+        group.MapGet("/", async (ProductDataContext db, ProductsMetrics metrics) =>
         {
+            metrics.ServiceCalls(1);
             return await db.Product.ToListAsync();
         })
         .WithName("GetAllProducts")
@@ -83,9 +86,8 @@ public static class ProductEndpoints
         .Produces<Product>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        stock.MapPut("/{id}", async (int id, int stockAmount, ProductDataContext db, ProductsMetrics metrics) =>
+        stock.MapPut("/{id}", async  (int id, int stockAmount, ProductDataContext db, ProductsMetrics metrics) =>
         {
-            // Increment the stock change metric.
             metrics.StockChange(stockAmount);
 
             var affected = await db.Product

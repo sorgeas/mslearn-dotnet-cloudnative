@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Products.Data;
 using Products.Endpoints;
+using Products.Instrumentation;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ProductDataContext>(options =>

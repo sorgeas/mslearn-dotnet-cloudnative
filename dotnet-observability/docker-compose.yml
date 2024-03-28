@@ -3,9 +3,13 @@ version: '3.4'
 services: 
 
   frontend:
-    image: store:latest
+    image: storeimage
+    build:
+      context: .
+      dockerfile: ./eShopLite/Store/Dockerfile
     environment: 
       - ProductEndpoint=http://backend:8080
+      - ImagePrefix=http://localhost:32001/images
       - ZIPKIN_URL=http://zipkin:9411
     ports:
       - "32000:8080"
@@ -13,14 +17,23 @@ services:
       - backend
       - prometheus
       - zipkin
+
   backend:
-    image: products:latest
+    image: productservice
+    build: 
+      context: .
+      dockerfile: ./eShopLite/Products/Dockerfile
     environment: 
       - ZIPKIN_URL=http://zipkin:9411
     ports: 
       - "32001:8080"
     depends_on: 
       - prometheus
+
+  zipkin:
+    image: openzipkin/zipkin
+    ports:
+      - 9411:9411
 
   prometheus:
     image: prom/prometheus
@@ -45,7 +58,3 @@ services:
     volumes:
       - ./grafana/datasource:/etc/grafana/provisioning/datasources
 
-  zipkin:
-    image: openzipkin/zipkin
-    ports:
-      - 9411:9411 
